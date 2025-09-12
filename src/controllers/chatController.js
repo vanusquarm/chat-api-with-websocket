@@ -16,7 +16,7 @@ const createChat = async (req, res, next) => {
 
 const sendMessage = async (req, res, next) => {
   try {
-    const { chatId, sender, text } = req.body;
+    const { chatId, text, sent } = req.body;
 
     // Check chat exists
     const chat = await Chat.findById(chatId);
@@ -25,9 +25,9 @@ const sendMessage = async (req, res, next) => {
     }
 
     const message = new Message({
-      chat: chatId,
-      sender,
-      text: text.trim()
+      chat_id: chatId,
+      content: text.trim(),
+      sent,
     });
 
     await message.save();

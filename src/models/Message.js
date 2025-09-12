@@ -4,26 +4,26 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema(
   {
-    chat: {
-      type: Schema.Types.ObjectId,
-      ref: 'Chat',
-      required: true,
-      index: true
-    },
-    sender: {
+    _id: { type: String, required: true }, // UUID
+
+    chat_id: {
       type: String,
-      required: true
+      ref: "Chat",
+      required: true,
+      index: true,
     },
-    text: {
+    content: {
       type: String,
       required: true,
       trim: true,
-      minlength: 1
-    }
+      minlength: 1,
+    },
+    sent: { type: Boolean, required: true }, // true = user sent, false = received
   },
   {
-    timestamps: true
+    timestamps: true, // set to false if you want to handle timestamps manually
   }
 );
 
+messageSchema.index({ chat_id: 1, timestamp: -1 });
 module.exports = mongoose.model('Message', messageSchema);

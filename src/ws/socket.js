@@ -45,14 +45,19 @@ module.exports = function initSocket(server) {
     // Send message (mirrors POST /api/chat/send)
     socket.on('sendMessage', async (payload, ack) => {
       try {
-        const { chatId, sender, text } = payload;
+        const { chatId, text, sent } = payload;
         if (!chatId || !sender || !text) {
           const errMsg = 'chatId, sender, and text are required';
           if (ack) ack({ success: false, error: errMsg });
           return;
         }
 
-        const message = new Message({ chat: chatId, sender, text });
+        const message = new Message({
+          chat_id: chatId,
+          content: text.trim(),
+          sent,
+        });
+
         await message.save();
 
         // Emit to all clients in the chat room
