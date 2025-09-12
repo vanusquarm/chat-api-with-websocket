@@ -70,8 +70,23 @@ module.exports = function initSocket(server) {
       }
     });
 
-    // Request message history for a chat (mirrors GET /api/chat/:chatId/messages)
+    // Request recent message history for a chat (mirrors GET /api/chat/:chatId/messages)
     socket.on('getMessages', async ({ chatId }, ack) => {
+      try {
+        if (!chatId) {
+          if (ack) ack({ success: false, error: 'chatId is required' });
+          return;
+        }
+        const messages = await Chat.findById({ chat: chatId }).recent_messages;
+        if (ack) ack({ success: true, messages });
+      } catch (err) {
+        console.error(err);
+        if (ack) ack({ success: false, error: err.message });
+      }
+    });
+
+    // Request message history for a chat (mirrors GET /api/chat/:chatId/messages)
+    socket.on('scroll', async ({ chatId }, ack) => {
       try {
         if (!chatId) {
           if (ack) ack({ success: false, error: 'chatId is required' });
