@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const seed = require('./seed');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/whatsapp-chat-api';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/chat-db';
 
 const connectDB = async () => {
   try {

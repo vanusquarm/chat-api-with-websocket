@@ -18,10 +18,21 @@ const chatSchema = new Schema(
     last_message: { type: String, trim: true },
     last_message_time: { type: Date },
     unread_count: { type: Number, default: 0 },
+    recent_messages: { type: [recentMessageSchema], default: [] }
   },
   {
     timestamps: true, // adds createdAt, updatedAt
   }
+);
+
+const recentMessageSchema = new Schema(
+  {
+    id: { type: String, required: true },       // UUID
+    content: { type: String, required: true, trim: true },
+    timestamp: { type: Date, required: true },
+    sent: { type: Boolean, required: true }
+  },
+  { _id: false }
 );
 
 chatSchema.index({ last_message_time: -1 });
