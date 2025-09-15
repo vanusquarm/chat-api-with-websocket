@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -19,7 +20,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // REST routes
-app.use('/api/chat', chatRoutes);
+app.use('/api/chats', chatRoutes);
 
 // Error handler
 app.use(errorHandler);

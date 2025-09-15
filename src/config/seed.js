@@ -1,5 +1,5 @@
 // seed.js
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const chats = [
   {
@@ -88,7 +88,7 @@ const messages = [
 async function seed(uri) {
   try {
     await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
+    const db = mongoose.connection;
     const chatsCol = db.collection("chats");
     const messagesCol = db.collection("messages");
 
@@ -108,6 +108,9 @@ async function seed(uri) {
   } catch (err) {
     console.error("❌ Seeding failed:", err);
   } finally {
-    await client.close();
+    await mongoose.disconnect();
   }
 }
+
+module.exports = seed;
+
