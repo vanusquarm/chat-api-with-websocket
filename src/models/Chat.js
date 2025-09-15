@@ -2,6 +2,16 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
+const recentMessageSchema = new Schema(
+  {
+    id: { type: String, required: true },       // UUID
+    content: { type: String, required: true, trim: true },
+    timestamp: { type: Date, required: true },
+    sent: { type: Boolean, required: true }
+  },
+  { _id: false }
+);
+
 const chatSchema = new Schema(
   {
     _id: { type: String, required: true }, // UUID
@@ -23,16 +33,6 @@ const chatSchema = new Schema(
   {
     timestamps: true, // adds createdAt, updatedAt
   }
-);
-
-const recentMessageSchema = new Schema(
-  {
-    id: { type: String, required: true },       // UUID
-    content: { type: String, required: true, trim: true },
-    timestamp: { type: Date, required: true },
-    sent: { type: Boolean, required: true }
-  },
-  { _id: false }
 );
 
 chatSchema.index({ last_message_time: -1 });
