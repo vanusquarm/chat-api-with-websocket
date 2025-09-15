@@ -4,7 +4,7 @@
   "description": "A WhatsApp Chat API server for managing chats and messages",
   "main": "src/server.js",
 "scripts": {
-  "start": "concurrently \"node src/server.js\" \"cd src/views && npm run dev\"",
+  "start": "node src/server.js",
   "dev": "nodemon src/server.js",
   "test": "jest --runInBand"
 },

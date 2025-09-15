@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 
-const API_URL = process.env.VITE_API_URL || "http://localhost:3000";
+const API_URL = process.env.VITE_API_URL || "http://localhost:5000/api/v1";
 
 let socket: Socket | null = null;
 
@@ -12,7 +12,7 @@ export const initSocket = () => {
 };
 
 export const createChat = async (participants: string[]) => {
-  const res = await fetch(`${API_URL}/api/chat/create`, {
+  const res = await fetch(`${API_URL}/chats`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ participants }),
@@ -20,8 +20,13 @@ export const createChat = async (participants: string[]) => {
   return res.json();
 };
 
+export const getChats = async (chatId: string) => {
+  const res = await fetch(`${API_URL}/chats`);
+  return res.json();
+};
+
 export const getMessages = async (chatId: string) => {
-  const res = await fetch(`${API_URL}/api/chat/${chatId}/messages`);
+  const res = await fetch(`${API_URL}/chats/${chatId}/messages`);
   return res.json();
 };
 
@@ -29,7 +34,7 @@ export const sendMessageSocket = (
   chatId: string,
   sender: string,
   text: string,
-  cb?: (res: any) => void
+  cb?: (res: unknown) => void
 ) => {
   initSocket().emit("sendMessage", { chatId, sender, text }, cb);
 };
@@ -38,6 +43,6 @@ export const joinChat = (chatId: string) => {
   initSocket().emit("joinChat", { chatId });
 };
 
-export const onNewMessage = (handler: (msg: any) => void) => {
+export const onNewMessage = (handler: (msg: unknown) => void) => {
   initSocket().on("newMessage", handler);
 };

@@ -2,7 +2,8 @@ const express = require('express');
 const {
   sendMessage,
   getMessages,
-  createChat
+  createChat,
+  getChats
 } = require('../controllers/chatController');
 const {
   validateCreateChat,
@@ -12,8 +13,16 @@ const {
 
 const router = express.Router();
 
-router.post('/create', validateCreateChat, createChat);
-router.post('/send', validateSendMessage, sendMessage);
+// Get all chats
+router.get('/', getChats);
+
+// Create a new chat
+router.post('/', validateCreateChat, createChat);
+
+// Send a message to a chat
+router.post('/:chatId/messages', validateSendMessage, sendMessage);
+
+// Get messages for a chat
 router.get('/:chatId/messages', validateChatIdParam, getMessages);
 
 module.exports = router;

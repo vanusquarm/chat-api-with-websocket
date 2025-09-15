@@ -1,6 +1,15 @@
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 
+const getChats = async (req, res, next) => {
+  try {
+    const chats = await Chat.find().sort({ updatedAt: -1 });
+    res.status(200).json(chats);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const createChat = async (req, res, next) => {
   try {
     const { participants } = req.body;
@@ -15,7 +24,8 @@ const createChat = async (req, res, next) => {
 };
 
 const sendMessage = async (req, res, next) => {
-  const { chatId, text, sent } = req.body;
+  const { chatId } = req.params;
+  const { text, sent } = req.body;
   const message = new Message({
     chat_id: chatId,
     content: text.trim(),
@@ -49,7 +59,7 @@ const getMessages = async (req, res, next) => {
       return res.status(404).json({ error: 'Chat not found' });
     }
 
-    const messages = await Message.find({ chat: chatId }).sort({ createdAt: 1 });
+    const messages = await Message.find({ chat_id: chatId }).sort({ createdAt: 1 });
 
     res.status(200).json(messages);
   } catch (err) {
@@ -80,6 +90,7 @@ async function updateRecentMessages(chatId, newMessage) {
 
 module.exports = {
   createChat,
+  getChats,
   sendMessage,
   getMessages
 };

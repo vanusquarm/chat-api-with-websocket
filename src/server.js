@@ -20,7 +20,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // REST routes
-app.use('/api/chats', chatRoutes);
+app.use('/api/v1/chats', chatRoutes);
 
 // Error handler
 app.use(errorHandler);

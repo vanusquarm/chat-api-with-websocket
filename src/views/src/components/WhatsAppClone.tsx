@@ -1,16 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mockChats } from "@/data/mockData";
+import { getChats, createChat, getMessages } from "@/data/chatApi";
 import ChatList from "./ChatList";
 import ChatWindow from "./ChatWindow";
 
 const WhatsAppClone = () => {
+  const [chats, setChats] = useState<unknown[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | undefined>(undefined);
   const [showChatList, setShowChatList] = useState(true);
+  const [messages, setMessages] = useState<unknown[]>([]);
+
+    // Fetch messages when a chat is selected
+  useEffect(() => {
+    if (selectedChatId) {
+      getMessages(selectedChatId).then(setMessages);
+    }
+  }, [selectedChatId]);
 
   const selectedChat = selectedChatId 
     ? mockChats.find(chat => chat.id === selectedChatId)
     : undefined;
-
+  
   const handleChatSelect = (chatId: string) => {
     setSelectedChatId(chatId);
     setShowChatList(false); // Hide chat list on mobile when chat is selected
@@ -19,6 +29,7 @@ const WhatsAppClone = () => {
   const handleBackToList = () => {
     setShowChatList(true);
     setSelectedChatId(undefined);
+    setMessages([]);
   };
 
   return (
