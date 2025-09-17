@@ -4,10 +4,8 @@ const { Schema } = mongoose;
 
 const messageSchema = new Schema(
   {
-    _id: { type: String, required: true }, // UUID
-
     chat_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Chat",
       required: true,
       index: true,

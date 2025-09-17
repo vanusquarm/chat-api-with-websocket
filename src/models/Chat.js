@@ -14,7 +14,6 @@ const recentMessageSchema = new Schema(
 
 const chatSchema = new Schema(
   {
-    _id: { type: String, required: true }, // UUID
     name: { type: String, required: true, trim: true },
     participants: {
       type: [String],
